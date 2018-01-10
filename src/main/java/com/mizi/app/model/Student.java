@@ -1,5 +1,6 @@
 package com.mizi.app.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.validator.constraints.NotBlank;
@@ -17,8 +18,6 @@ import java.util.Date;
 @Entity
 @Table(name = "student")
 @EntityListeners(AuditingEntityListener.class)
-@JsonIgnoreProperties(value = {"createdAt", "updatedAt"},
-        allowGetters = true)
 public class Student implements Serializable {
 
     @Id
@@ -31,11 +30,13 @@ public class Student implements Serializable {
     @NotBlank
     private String country;
 
+    @JsonIgnore
     @Column(nullable = false, updatable = false, name = "created_at")
     @Temporal(TemporalType.TIMESTAMP)
     @CreatedDate
     private Date createdAt;
 
+    @JsonIgnore
     @Column(nullable = false, name = "updated_at")
     @Temporal(TemporalType.TIMESTAMP)
     @LastModifiedDate
@@ -44,17 +45,17 @@ public class Student implements Serializable {
     public Student() {
     }
 
-    public Student(Long id, String name, String studentId) {
+    public Student(Long id, String name, String country) {
         super();
         this.id = id;
         this.name = name;
-        this.country = studentId;
+        this.country = country;
     }
 
-    public Student(String name, String studentId) {
+    public Student(String name, String country) {
         super();
         this.name = name;
-        this.country = studentId;
+        this.country = country;
     }
 
     public Long getId() {

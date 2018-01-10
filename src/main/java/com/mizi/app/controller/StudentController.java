@@ -1,12 +1,14 @@
 package com.mizi.app.controller;
 
 import com.mizi.app.model.Student;
-import com.mizi.app.repository.StudentRepository;
+import com.mizi.app.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
+import java.net.URI;
 import java.util.List;
 
 /**
@@ -15,24 +17,30 @@ import java.util.List;
 @RestController
 @RequestMapping("/api")
 public class StudentController {
-
+    
     @Autowired
-    StudentRepository studentRepository;
+    StudentService studentService;
 
     // Get All Students
     @GetMapping("/students")
     public List<Student> getAllStudents() {
-        return studentRepository.findAll();
+        return studentService.findAll();
     }
 
     @PostMapping("/students")
-    public Student createStudent(@Valid @RequestBody Student student) {
-        return studentRepository.save(student);
+    public ResponseEntity<Student> createStudent(@Valid @RequestBody Student student) {
+        Student newStudent =  studentService.save(student);
+
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest().path("/{id}")
+                .buildAndExpand(newStudent.getId()).toUri();
+
+        return ResponseEntity.created(location).build();
     }
 
     @GetMapping("/students/{id}")
     public ResponseEntity<Student> getStudentById(@PathVariable(value="id") Long studentId) {
-        Student student = studentRepository.findOne(studentId);
+        Student student = studentService.findOne(studentId);
         if (student == null) {
             return ResponseEntity.notFound().build();
         }
@@ -42,23 +50,23 @@ public class StudentController {
     @PutMapping("/students/{id}")
     public ResponseEntity<Student> updateStudent(@PathVariable(value = "id") Long studentId,
                                                  @Valid @RequestBody Student studentDetails) {
-        Student student = studentRepository.findOne(studentId);
+        Student student = studentService.findOne(studentId);
         if (student == null) {
             return ResponseEntity.notFound().build();
         }
         student.setName(studentDetails.getName());
         student.setCountry(studentDetails.getCountry());
 
-        Student updatedStudent = studentRepository.save(student);
+        Student updatedStudent = studentService.save(student);
         return ResponseEntity.ok(updatedStudent);
     }
 
     public ResponseEntity<Student> deleteStudent(@PathVariable(value = "id") Long studentId) {
-        Student student = studentRepository.findOne(studentId);
+        Student student = studentService.findOne(studentId);
         if (student == null) {
             return ResponseEntity.notFound().build();
         }
-        studentRepository.delete(student);
+        studentService.delete(student);
         return ResponseEntity.ok().build();
     }
 }

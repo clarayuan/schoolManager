@@ -33,8 +33,8 @@ public class StudentRepositoryTest {
 
         List<Student> studentList = studentRepository.findAll();
 
-        assertThat(studentList.size()).isEqualTo(3);
-
+        assertThat(studentList.size()).isEqualTo(4);
+        assertThat(firstStudent.getCreatedAt()).isNotNull();
     }
 
 }
