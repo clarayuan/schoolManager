@@ -1,11 +1,27 @@
 
-Main things learned in this project:
-spring jpa data auditing: how to set it up, spring rest api, unit test them.
+Main Demo Points
+1. spring jpa data auditing
 
-Build the project and run using mvn spring-boot:run command. 
+2. spring mvc rest
 
-Open a browser and type http://localhost:8080/console to access h2 database.
+3. spring boot
 
-todo references:
-add more robust restful apis:
+4. h2 db
+
+5. camel routing
+
+
+Admin Instructions
+1. Build the project and run using mvn spring-boot:run command. (with mvn clean install -DskipTests)
+
+2. Open a browser and type http://localhost:8080/console to access h2 database.
+
+3. add a student by:
+`$ curl -H "Content-Type: application/json" -X POST -d '{"name":"Li Zhao","country":"Japan"}' http://localhost:8080/api/students`
+
+4. get students:
+`$ curl http://localhost:8080/api/students`
+
+todos
+1. add more robust restful apis:
 https://spring.io/guides/tutorials/bookmarks/
