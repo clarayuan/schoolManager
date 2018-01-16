@@ -5,6 +5,7 @@ import com.mizi.app.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.async.DeferredResult;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
@@ -25,6 +26,25 @@ public class StudentController {
     @GetMapping("/students")
     public List<Student> getAllStudents() {
         return studentService.findAll();
+    }
+
+    @GetMapping("/students/async")
+    public DeferredResult<List<Student>> getAllStudentsAsync() {
+        DeferredResult<List<Student>> defResult = new DeferredResult<>();
+
+        new Thread(() -> {
+            List<Student> students = studentService.findAll();
+
+            try {
+                Thread.sleep(1000);
+            }
+            catch (Exception ee) {
+
+            }
+            defResult.setResult(students);
+        }).start();
+
+        return defResult;
     }
 
     @PostMapping("/students")
