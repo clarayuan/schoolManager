@@ -22,7 +22,6 @@ public class StudentController {
     @Autowired
     StudentService studentService;
 
-    // Get All Students
     @GetMapping("/students")
     public List<Student> getAllStudents() {
         return studentService.findAll();
