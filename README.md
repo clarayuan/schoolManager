@@ -22,6 +22,8 @@ Admin Instructions
 4. get students:
 `$ curl http://localhost:8080/api/students`
 
+5. 
+
 todos
 1. add more robust restful apis:
 https://spring.io/guides/tutorials/bookmarks/
