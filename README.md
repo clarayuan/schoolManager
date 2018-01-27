@@ -27,3 +27,5 @@ Admin Instructions
 todos
 1. add more robust restful apis:
 https://spring.io/guides/tutorials/bookmarks/
+
+2. add caching
